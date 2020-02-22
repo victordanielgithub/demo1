@@ -21,6 +21,7 @@ public class Demo1Application implements CommandLineRunner {
 	public PostComponent postComponent;
 
 	@Autowired
+	@Qualifier("servicesDecorado")
 	public PostServices postServices;
 
 	public static void main(String[] args) {
@@ -30,12 +31,18 @@ public class Demo1Application implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println(conexion.getNameDB());
+
 		postComponent.get_listPosts().forEach(post -> {
 			System.out.println(post.getDescripcion());
 		});
+
 		System.out.println("*********POST SERVICE***********");
-		postServices.validacionId(postComponent.get_listPosts()).forEach(post -> {
-			System.out.println(post.getTitulo());
-		});
+		try{
+			postServices.validacion(postComponent.get_listPosts()).forEach(post -> {
+				System.out.println(post.getTitulo());
+			});
+		}catch (Exception e){
+			System.out.println(e.getMessage());
+		}
 	}
 }
