@@ -2,6 +2,8 @@ package com.example.demo1.services.impl;
 
 import com.example.demo1.models.Post;
 import com.example.demo1.services.PostServices;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +11,9 @@ import java.util.List;
 
 @Service("servicesDecorado")
 public class PostServicesDecorado implements PostServices {
+    // LOG
+    private final Log log = LogFactory.getLog(getClass());
+    // END LOG
 
     @Autowired
     private PostServicesImpl postServicesImp;
@@ -17,7 +22,9 @@ public class PostServicesDecorado implements PostServices {
     private PostServicesImplDos postServicesImplDos;
 
     @Override
-    public List<Post> validacion(List<Post> lista) {
+    public List<Post> validacion(List<Post> lista) throws NullPointerException {
+        log.debug(lista);
+
         lista = postServicesImp.validacion(lista);
         lista = postServicesImplDos.validacion(lista);
 
@@ -27,7 +34,6 @@ public class PostServicesDecorado implements PostServices {
             if(post.getFecha() == null)
                 throw new NullPointerException("La fecha esta en null");
         }
-        System.out.println("Esta es la clase decorada");
         return lista;
     }
 }

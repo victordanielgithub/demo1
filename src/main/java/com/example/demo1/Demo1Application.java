@@ -3,6 +3,8 @@ package com.example.demo1;
 import com.example.demo1.beans.PostComponent;
 import com.example.demo1.models.Conexion;
 import com.example.demo1.services.PostServices;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
@@ -30,19 +32,22 @@ public class Demo1Application implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println(conexion.getNameDB());
+		// LOG
+		Log log = LogFactory.getLog(getClass());
+		// END LOG
 
 		postComponent.get_listPosts().forEach(post -> {
 			System.out.println(post.getDescripcion());
 		});
 
-		System.out.println("*********POST SERVICE***********");
 		try{
 			postServices.validacion(postComponent.get_listPosts()).forEach(post -> {
-				System.out.println(post.getTitulo());
+				//System.out.println(post.getTitulo());
+				log.info(post.getTitulo());
 			});
 		}catch (Exception e){
-			System.out.println(e.getMessage());
+			//System.out.println(e.getMessage());
+			log.error(e);
 		}
 	}
 }
