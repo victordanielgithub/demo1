@@ -4,10 +4,7 @@ import com.example.demo1.configuration.Paginas;
 import com.example.demo1.models.Post;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -23,7 +20,7 @@ public class ControllerBasic {
     ArrayList<Post> listaPosts;
 
     @GetMapping(path = {"/","/home", "/inicio"})       // para obtener recursos
-    public String saludar(Model model){     // MODEL ES UNA INTERFAZ
+    public String home(Model model){     // MODEL ES UNA INTERFAZ
         model.addAttribute("listaPosts", this.get_listPosts());         // CREAMOS UN ATRIBUTO PARA LA INTERFAZ
         return "index";
     }
@@ -36,11 +33,23 @@ public class ControllerBasic {
     }
 
     // 1er METODO PARA PASAR PARAMETROS
-    // getPostIndividual(IN PARAMETRO PARA FILTRAR) = RETURN OBJETCT POST WHERE ID=IN_ID
     @GetMapping(path = {"/post"})
     public ModelAndView getPostIndividual1(
             @RequestParam(defaultValue = "1", name = "id", required = false) int id     // PARAMETRO DE INGRESO DESDE EL INDEX
-            ){
+        ){
+        ModelAndView modelAndView = new ModelAndView((Paginas.POST));
+        List<Post> listaPostFiltrados = this.get_listPosts().stream().filter(
+                (p) -> {
+                    return p.getId() == id;
+                }).collect(Collectors.toList());
+        modelAndView.addObject(listaPostFiltrados.get(0));
+        return modelAndView;
+    }
+    // 2do METODO PARA PASAR PARAMETROS
+    @GetMapping(path = {"/post/{post}"})
+    public ModelAndView getPostIndividual2(
+            @PathVariable(required = true, name = "post") int id     // PARAMETRO DE INGRESO DESDE EL INDEX
+        ){
         ModelAndView modelAndView = new ModelAndView((Paginas.POST));
         List<Post> listaPostFiltrados = this.get_listPosts().stream().filter(
                 (p) -> {
@@ -50,18 +59,18 @@ public class ControllerBasic {
         return modelAndView;
     }
 
-    // 2do METODO PARA PASAR PARAMETROS
-    @GetMapping(path = {"/post/{post}"})
-    public ModelAndView getPostIndividual2(
-            @PathVariable(required = true, name = "post") int id     // PARAMETRO DE INGRESO DESDE EL INDEX
-    ){
-        ModelAndView modelAndView = new ModelAndView((Paginas.POST));
-        List<Post> listaPostFiltrados = this.get_listPosts().stream().filter(
-                (p) -> {
-                    return p.getId() == id;
-                }).collect(Collectors.toList());
-        modelAndView.addObject(listaPostFiltrados.get(0));
-        return modelAndView;
+    @GetMapping(path = "/postNew")
+    public ModelAndView getForm_newPost(){
+        Post x = new Post();
+        x.mostrar();
+        return new ModelAndView("postNew").addObject("post", x);
+    }
+    @PostMapping(path = "/postNewAdd")
+    public String postNewAdd(Post post, Model model){
+        List<Post> listaPosts = this.get_listPosts();
+        listaPosts.add(post);
+        model.addAttribute("listaPosts", listaPosts);
+        return "index";
     }
 
     public void obtienePostDesdeDB(){

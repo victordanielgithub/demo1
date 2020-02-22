@@ -3,11 +3,11 @@ package com.example.demo1.models;
 import java.util.Date;
 
 public class Post   {
-    private int id;
-    private String descripcion;
-    private String urlImg;
-    private Date fecha;
-    private String titulo;
+    private int id = 1;
+    private String descripcion = "descripcion";
+    private String urlImg = "http://localhost:9000/img/mongodb.png";
+    private Date fecha = new Date();
+    private String titulo = "titulo";
 
     public Post(int id, String descripcion, String urlImg, Date fecha, String titulo) {
         this.id = id;
@@ -58,5 +58,12 @@ public class Post   {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+    public void mostrar(){
+        System.out.println(this.id);
+        System.out.println(this.descripcion);
+        System.out.println(this.urlImg);
+        System.out.println(this.fecha);
+        System.out.println(this.titulo);
     }
 }
