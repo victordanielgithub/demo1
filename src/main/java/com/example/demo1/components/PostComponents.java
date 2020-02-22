@@ -1,14 +1,17 @@
-package com.example.demo1.beans;
+package com.example.demo1.components;
 
 import com.example.demo1.models.Post;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Component("com.example.demo1.beans.PostComponent")      // @Component: Es el estereotipo general y permite anotar un bean para que Spring lo considere uno de sus objetos
-public class PostComponent {
+@Component("com.example.demo1.components.PostComponents")      // @Component: Es el estereotipo general y permite anotar un bean para que Spring lo considere uno de sus objetos
+@Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
+public class PostComponents {
     public List<Post> get_listPosts(){
         ArrayList<String> descipciones= new ArrayList<>();
         descipciones.add("Angular is a platform for building mobile and desktop web applications. Join the community of millions of developers who build compelling user interfaces with");

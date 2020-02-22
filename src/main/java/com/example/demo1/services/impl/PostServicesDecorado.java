@@ -5,11 +5,13 @@ import com.example.demo1.services.PostServices;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service("servicesDecorado")
+@Scope("singleton")
 public class PostServicesDecorado implements PostServices {
     // LOG
     private final Log log = LogFactory.getLog(getClass());
