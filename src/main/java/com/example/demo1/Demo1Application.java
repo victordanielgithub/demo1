@@ -2,6 +2,7 @@ package com.example.demo1;
 
 import com.example.demo1.beans.PostComponent;
 import com.example.demo1.models.Conexion;
+import com.example.demo1.services.PostServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
@@ -19,6 +20,9 @@ public class Demo1Application implements CommandLineRunner {
 	@Qualifier("com.example.demo1.beans.PostComponent")
 	public PostComponent postComponent;
 
+	@Autowired
+	public PostServices postServices;
+
 	public static void main(String[] args) {
 		SpringApplication.run(Demo1Application.class, args);
 	}
@@ -28,6 +32,10 @@ public class Demo1Application implements CommandLineRunner {
 		System.out.println(conexion.getNameDB());
 		postComponent.get_listPosts().forEach(post -> {
 			System.out.println(post.getDescripcion());
+		});
+		System.out.println("*********POST SERVICE***********");
+		postServices.validacionId(postComponent.get_listPosts()).forEach(post -> {
+			System.out.println(post.getTitulo());
 		});
 	}
 }
